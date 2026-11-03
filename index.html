@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туториал: SExtractor + SCAMP для астрометрии</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #1a3d5c;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            margin-top: 1.8em;
+            font-size: 1.6em;
+        }
+        h3 {
+            margin-top: 1.4em;
+            font-size: 1.3em;
+            border-bottom: none;
+            color: #2a5a7a;
+        }
+        code {
+            background-color: #eef2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            color: #b03a2e;
+        }
+        pre {
+            background-color: #1e2a36;
+            color: #e8eaed;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        .note {
+            background-color: #e8f4fd;
+            border-left: 5px solid #2a7ab5;
+            padding: 12px 16px;
+            margin: 18px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .warning {
+            background-color: #fff4e5;
+            border-left: 5px solid #e67e22;
+            padding: 12px 16px;
+            margin: 18px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1a3d5c;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f6fa;
+        }
+        .ref {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 30px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        .toc {
+            background-color: #f0f4f8;
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 6px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #1a5a8a;
+            font-weight: 500;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Туториал: SExtractor + SCAMP</h1>
+<p><strong>Астрометрическая калибровка астрономических изображений</strong></p>
+
+<div class="toc">
+    <h3>Содержание</h3>
+    <ul>
+        <li><a href="#intro">1. Введение</a></li>
+        <li><a href="#install">2. Установка</a></li>
+        <li><a href="#sextractor">3. SExtractor: извлечение каталога источников</a></li>
+        <li><a href="#scamp">4. SCAMP: астрометрическое решение</a></li>
+        <li><a href="#pipeline">5. Полный конвейер: от изображения к WCS</a></li>
+        <li><a href="#conclusion">6. Заключение</a></li>
+    </ul>
+</div>
+
+<h2 id="intro">1. Введение</h2>
+<p><strong>SExtractor</strong> (Source Extractor) — программное обеспечение для обнаружения и измерения объектов на астрономических изображениях. Оно создаёт каталоги источников с координатами, потоками, формами и другой информацией[reference:0].</p>
+<p><strong>SCAMP</strong> (Software for Calibrating AstroMetry and Photometry) — программа, которая вычисляет параметры астрометрической проекции по каталогам источников, полученным из FITS-изображений, и записывает решение в формате WCS (World Coordinate System)[reference:1].</p>
+<p>Совместное использование SExtractor и SCAMP позволяет автоматически привязать изображение к небесной системе координат: SExtractor находит звёзды и создаёт каталог в формате <code>FITS_LDAC</code>, а SCAMP сопоставляет этот каталог с внешним астрометрическим каталогом (например, 2MASS или Gaia) и вычисляет уточнённые WCS-заголовки[reference:2]. Эти заголовки затем можно использовать для stacking (например, в SWarp) или для дальнейшей фотометрии[reference:3].</p>
+
+<h2 id="install">2. Установка</h2>
+
+<h3>2.1. SExtractor</h3>
+<p>Самый простой способ — установить бинарный пакет из репозитория вашего дистрибутива Linux[reference:4]:</p>
+<pre><code># Debian / Ubuntu
+sudo apt-get install sextractor
+
+# Fedora
+sudo dnf install sextractor</code></pre>
+<p>Если в вашем дистрибутиве пакета нет или нужна последняя версия, соберите SExtractor из исходников с GitHub[reference:5]:</p>
+<pre><code>unzip sextractor-&lt;version&gt;.zip
+cd sextractor-&lt;version&gt;
+./autogen.sh
+./configure
+make -j
+sudo make install</code></pre>
+<p>Проверка установки:</p>
+<pre><code>sex --version</code></pre>
+
+<h3>2.2. SCAMP</h3>
+<p>SCAMP также распространяется через пакетные менеджеры (например, <code>apt-get install scamp</code> или <code>dnf install scamp</code>). При сборке из исходников используются стандартные шаги <code>./configure && make && sudo make install</code>. Официальная документация доступна на <a href="https://scamp.readthedocs.io/" target="_blank">scamp.readthedocs.io</a>.</p>
+
+<h2 id="sextractor">3. SExtractor: извлечение каталога источников</h2>
+
+<h3>3.1. Создание конфигурационных файлов</h3>
+<p>SExtractor управляется тремя основными файлами: конфигурационным (<code>default.sex</code>), списком параметров каталога (<code>default.param</code>) и, при необходимости, файлами свёртки и нейросети. Если конфигурационный файл не указан, программа ищет <code>default.sex</code> в текущем каталоге[reference:6]. Сгенерировать шаблон конфигурации можно командой:</p>
+<pre><code>sex -d &gt; default.sex</code></pre>
+<p>Для более полного шаблона (с редко используемыми параметрами) используйте <code>sex -dd &gt; default.sex</code>[reference:7].</p>
+
+<h3>3.2. Ключевые параметры конфигурации</h3>
+<p>Для совместимости с SCAMP критически важно установить тип выходного каталога в <code>FITS_LDAC</code> и включить нужные измерения[reference:8]. Ниже приведён минимально необходимый фрагмент <code>default.sex</code>:</p>
+<pre><code>CATALOG_NAME     sources.cat
+CATALOG_TYPE     FITS_LDAC
+PARAMETERS_NAME  default.param
+
+# Порог обнаружения (в сигмах)
+DETECT_THRESH   1.5
+DETECT_MINAREA  5
+
+# Фильтрация
+FILTER_NAME      default.conv
+DEBLEND_NTHRESH  32
+DEBLEND_MINCONT  0.005
+
+# Оценка фона
+BACK_SIZE       64
+BACK_FILTERSIZE 3
+
+# Выходные параметры (для SCAMP)
+# Должны быть включены в default.param</code></pre>
+
+<h3>3.3. Файл параметров каталога (<code>default.param</code>)</h3>
+<p>SCAMP требует наличия в каталоге определённых измерений. В файле <code>default.param</code> каждый параметр указывается на отдельной строке[reference:9]. Минимальный набор, рекомендуемый документацией SCAMP[reference:10]:</p>
+<pre><code>NUMBER
+XWIN_IMAGE
+YWIN_IMAGE
+ERRAWIN_IMAGE
+ERRBWIN_IMAGE
+ERRTHETAWIN_IMAGE
+FLUX_AUTO
+FLUXERR_AUTO
+FLAGS
+FLAGS_WEIGHT
+IMAFLAGS_ISO
+FLUX_RADIUS
+ELONGATION
+SPREAD_MODEL
+SPREADERR_MODEL</code></pre>
+<div class="note">
+    <strong>Пояснение:</strong> <code>XWIN_IMAGE</code> и <code>YWIN_IMAGE</code> — взвешенные по гауссу центроиды; <code>FLUX_AUTO</code> — автоматическая (адаптивная) апертурная фотометрия; <code>FLAGS</code> помогает SCAMP отфильтровать дефектные или слившиеся объекты[reference:11].
+</div>
+
+<h3>3.4. Запуск SExtractor</h3>
+<pre><code>sex image.fits -c default.sex</code></pre>
+<p>После выполнения будет создан файл <code>sources.cat</code> в формате FITS_LDAC, содержащий каталог источников и копию заголовка исходного изображения. Именно этот файл передаётся в SCAMP.</p>
+
+<h2 id="scamp">4. SCAMP: астрометрическое решение</h2>
+
+<h3>4.1. Входные данные</h3>
+<p>SCAMP читает каталоги в формате <code>FITS_LDAC</code>, созданные SExtractor версии 2.4.4 или выше[reference:12]. Каталог должен содержать как минимум центроиды, их ошибки, потоки и ошибки потоков (см. раздел 3.3).</p>
+
+<h3>4.2. Конфигурационный файл SCAMP</h3>
+<p>SCAMP, как и SExtractor, использует конфигурационный файл. Если он не задан явно, параметры берутся по умолчанию. Для управления процессом создайте файл, например <code>scamp.conf</code>. Ключевые параметры[reference:13]:</p>
+<pre><code># --- Группировка полей ---
+GROUP_RADIUS     1.0          # Максимальное расстояние между группами (град)
+
+# --- Справочный каталог ---
+ASTREF_CATALOG   2MASS        # Может быть USNO-B1, Gaia (через FILE), 2MASS и др.
+ASTREF_BAND      DEFAULT      # Фотометрическая полоса для звёзд сравнения
+
+# --- Сопоставление (pattern matching) ---
+MATCH            Y
+MATCH_NMAX       0            # 0 = авто
+PIXSCALE_MAXERR  1.2          # Максимальная ошибка масштаба
+POSANGLE_MAXERR  5.0          # Максимальная ошибка позиционного угла (град)
+POSITION_MAXERR  1.0          # Максимальная позиционная ошибка (угл. мин)
+
+# --- Астрометрическое решение ---
+SOLVE_ASTROM     Y
+DISTORT_DEGREES  3            # Степень полинома дисторсии
+CENTROID_KEYS    XWIN_IMAGE,YWIN_IMAGE
+CENTROIDERR_KEYS ERRAWIN_IMAGE,ERRBWIN_IMAGE,ERRTHETAWIN_IMAGE
+PHOTFLUX_KEY     FLUX_AUTO
+PHOTFLUXERR_KEY  FLUXERR_AUTO
+
+# --- Выходные каталоги ---
+MERGEDOUTCAT_TYPE  FITS_LDAC
+MERGEDOUTCAT_NAME  scamp_merged.cat</code></pre>
+<div class="warning">
+    <strong>Важно:</strong> Если вы используете локальный файл справочного каталога, установите <code>ASTREF_CATALOG FILE</code> и укажите путь в <code>ASTREFCAT_NAME</code>[reference:14]. По умолчанию SCAMP обращается к USNO-B1[reference:15].
+</div>
+
+<h3>4.3. Запуск SCAMP</h3>
+<p>Синтаксис командной строки[reference:16]:</p>
+<pre><code>scamp source1.cat [source2.cat ...] -c scamp.conf</code></pre>
+<p>Если каталогов много, удобно передать их списком в файле (по одному имени на строку), указав этот файл с префиксом <code>@</code>[reference:17]:</p>
+<pre><code>scamp @catalog_list.txt -c scamp.conf</code></pre>
+
+<h3>4.4. Выходные файлы</h3>
+<p>SCAMP создаёт:</p>
+<ul>
+    <li><strong><code>.head</code></strong> — FITS-заголовки с обновлёнными WCS-ключами, которые можно применить к исходным изображениям (например, с помощью <code>MissFITS</code> или <code>SWarp</code>)[reference:18].</li>
+    <li><strong>Объединённый каталог</strong> (если <code>MERGEDOUTCAT_TYPE</code> не <code>NONE</code>) — калиброванные координаты и величины, усреднённые по всем перекрывающимся наблюдениям[reference:19].</li>
+    <li><strong>Диагностические файлы</strong> — полезны для проверки качества решения.</li>
+</ul>
+
+<h2 id="pipeline">5. Полный конвейер: от изображения к WCS</h2>
+<p>Ниже приведена минимальная последовательность команд для обработки одного изображения.</p>
+<pre><code># 1. Извлечение каталога источников
+sex image.fits -c default.sex -CATALOG_NAME image.cat
+
+# 2. Астрометрическая калибровка
+scamp image.cat -c scamp.conf
+
+# 3. Применение обновлённых заголовков (пример с MissFITS)
+# missfits image.fits image.head
+
+# Альтернативно: SCAMP можно сразу указать записать обновлённые заголовки
+# и затем использовать SWarp для stacking</code></pre>
+<p>После успешной работы SCAMP в директории появятся файлы <code>image.head</code> (или аналогичные) и объединённый каталог. Заголовки <code>.head</code> содержат уточнённые ключевые слова WCS (<code>CRVAL1</code>, <code>CRVAL2</code>, <code>CD1_1</code> и т.д.), которые обеспечивают астрометрическую привязку с точностью до десятых долей пикселя и лучше[reference:20].</p>
+
+<h2 id="conclusion">6. Заключение</h2>
+<p>Связка SExtractor + SCAMP является стандартным инструментом в астрономических конвейерах обработки. SExtractor быстро и надёжно извлекает каталоги источников, а SCAMP использует их для вычисления астрометрического решения с учётом дисторсии оптики. Правильная настройка формата <code>FITS_LDAC</code> и набора параметров каталога — залог успешной работы SCAMP. Дополнительные примеры и тонкая настройка описаны в официальной документации обоих пакетов.</p>
+
+<div class="ref">
+    <strong>Источники:</strong><br>
+    Документация SExtractor: <a href="https://sextractor.readthedocs.io/" target="_blank">sextractor.readthedocs.io</a><br>
+    Документация SCAMP: <a href="https://scamp.readthedocs.io/" target="_blank">scamp.readthedocs.io</a><br>
+    Руководство SCAMP (PDF): <a href="https://faun.rc.fas.harvard.edu/ameisner/scamp.pdf" target="_blank">faun.rc.fas.harvard.edu/ameisner/scamp.pdf</a>
+</div>
+
+</body>
+</html>
