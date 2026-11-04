@@ -1,2 +1,5 @@
-- [Read Me](README)
-- [Install](install)
+- [Введение](README.md)
+- [2. Установка](install.md)
+- [3. SExtractor](sextractor.md)
+- [4. SCAMP](scamp.md)
+- [5. Сборка конвейера](pipeline.md)
