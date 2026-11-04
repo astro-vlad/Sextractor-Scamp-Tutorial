@@ -1,393 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SExtractor + SCAMP: собираем и запускаем без лишней боли</title>
-    <style>
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            line-height: 1.7;
-            color: #2c2c2c;
-            max-width: 880px;
-            margin: 0 auto;
-            padding: 30px 20px;
-            background-color: #fbfbf8;
-        }
-        h1, h2, h3 {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #1e3a4f;
-        }
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 0.2em;
-            letter-spacing: -0.5px;
-        }
-        h1 + p {
-            font-size: 1.1em;
-            color: #555;
-            font-style: italic;
-            margin-top: 0;
-        }
-        h2 {
-            margin-top: 2em;
-            font-size: 1.6em;
-            border-bottom: 2px solid #d0d7de;
-            padding-bottom: 6px;
-        }
-        h3 {
-            margin-top: 1.5em;
-            font-size: 1.25em;
-            color: #2a5a7a;
-        }
-        code {
-            background-color: #eef2f5;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            font-size: 0.9em;
-            color: #a8322c;
-        }
-        pre {
-            background-color: #1f2d3a;
-            color: #e6edf3;
-            padding: 18px 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            font-size: 0.88em;
-            line-height: 1.5;
-            margin: 1.2em 0;
-        }
-        pre code {
-            background: none;
-            color: inherit;
-            padding: 0;
-        }
-        .note {
-            background-color: #e9f3fb;
-            border-left: 4px solid #3a7ca5;
-            padding: 14px 18px;
-            margin: 1.5em 0;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.95em;
-        }
-        .warning {
-            background-color: #fdf2e3;
-            border-left: 4px solid #d97706;
-            padding: 14px 18px;
-            margin: 1.5em 0;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.95em;
-        }
-        .aside {
-            background-color: #f4f0e8;
-            border-left: 4px solid #8b7d6b;
-            padding: 14px 18px;
-            margin: 1.5em 0;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.95em;
-            font-style: italic;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1.5em 0;
-            font-size: 0.95em;
-        }
-        th, td {
-            border: 1px solid #ccd4dc;
-            padding: 10px 14px;
-            text-align: left;
-            vertical-align: top;
-        }
-        th {
-            background-color: #1e3a4f;
-            color: #fff;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 500;
-        }
-        tr:nth-child(even) {
-            background-color: #f6f8fa;
-        }
-        .toc {
-            background-color: #f0f3f6;
-            padding: 18px 26px;
-            border-radius: 8px;
-            margin: 30px 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 0.95em;
-        }
-        .toc ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-        }
-        .toc li {
-            margin: 8px 0;
-        }
-        .toc a {
-            text-decoration: none;
-            color: #2a5a7a;
-        }
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        .footnote {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 3em;
-            border-top: 1px solid #d0d7de;
-            padding-top: 16px;
-        }
-        .footnote a {
-            color: #2a5a7a;
-        }
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1b1f23;
-                color: #c9d1d9;
-            }
-            h1, h2, h3 {
-                color: #79c0ff;
-            }
-            code {
-                background-color: #2d333b;
-                color: #f0883e;
-            }
-            pre {
-                background-color: #0d1117;
-                border: 1px solid #30363d;
-            }
-            th {
-                background-color: #21262d;
-            }
-            tr:nth-child(even) {
-                background-color: #161b22;
-            }
-            .toc, .note, .warning, .aside {
-                background-color: #21262d;
-            }
-            .note { border-left-color: #58a6ff; }
-            .warning { border-left-color: #d29922; }
-            .aside { border-left-color: #8b949e; }
-            .footnote { color: #8b949e; }
-            .footnote a { color: #58a6ff; }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+
+  <!-- Replace with your own title and description. -->
+  <title>Awesome Docsify Site</title>
+  <meta name="description" content="An awesome docsify site for publishing some content on the web.">
+
+  <!-- Core Theme (see https://docsify.js.org/#/themes) -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css">
+
 </head>
+
 <body>
-
-<h1>SExtractor + SCAMP</h1>
-<p>Собираем последние версии из исходников — и прикручиваем астрометрию к вашим снимкам</p>
-
-<div class="toc">
-    <strong>Что тут будет:</strong>
-    <ul>
-        <li><a href="#intro">1. Зачем вообще эти два зверя</a></li>
-        <li><a href="#sextractor-config">2. SExtractor: конфиг, который не взорвётся</a></li>
-        <li><a href="#install">3. Установка из исходников (Linux / macOS / Windows)</a></li>
-        <li><a href="#scamp-config">4. SCAMP: настройка и запуск</a></li>
-        <li><a href="#pipeline">5. Собираем всё вместе</a></li>
-    </ul>
-</div>
-
-<h2 id="intro">1. Зачем вообще эти два зверя</h2>
-
-<p>Если вы когда-нибудь пытались сложить несколько астрономических снимков в кучу и получали на выходе звёздную кашу вместо картинки — вы уже знаете, зачем нужна астрометрическая привязка. <strong>SExtractor</strong> находит на снимке звёзды и галактики и делает из них каталог. <strong>SCAMP</strong> берёт этот каталог, сравнивает его с внешним астрометрическим каталогом (2MASS, Gaia и т.д.) и вычисляет уточнённые координатные заголовки (WCS). После этого изображение можно спокойно складывать, и звёзды не будут размазываться в полосы.</p>
-
-<p>Работают они в паре: SExtractor выдаёт каталог в специальном формате <code>FITS_LDAC</code>, SCAMP его читает и на выходе отдаёт <code>.head</code>-файл с обновлёнными WCS-ключами. Дальше этот заголовок можно скормить SWarp'у или чему угодно ещё.</p>
-
-<h2 id="sextractor-config">2. SExtractor: конфиг, который не взорвётся</h2>
-
-<p>SExtractor управляется тремя файлами: основной конфиг (<code>default.sex</code>), список параметров каталога (<code>default.param</code>) и, если нужно, файл свёртки. Самый простой способ получить отправную точку — сгенерировать дефолтный конфиг командой <code>sex -d</code> (или <code>sex -dd</code>, если хочется увидеть вообще все параметры, включая те, что обычно скрыты).</p>
-
-<p>Для связки со SCAMP критично, чтобы выходной каталог был именно <code>FITS_LDAC</code>. Вот минимальный набор в <code>default.sex</code>, которого обычно достаточно:</p>
-
-<pre><code>CATALOG_NAME     sources.cat
-CATALOG_TYPE     FITS_LDAC
-PARAMETERS_NAME  default.param
-
-DETECT_THRESH   1.5
-DETECT_MINAREA  5
-
-BACK_SIZE       64
-BACK_FILTERSIZE 3
-
-DEBLEND_NTHRESH 32
-DEBLEND_MINCONT 0.005</code></pre>
-
-<p>А в <code>default.param</code> нужно перечислить параметры, которые SCAMP ожидает увидеть. Без них он просто не поймёт, что вы от него хотите:</p>
-
-<pre><code>NUMBER
-XWIN_IMAGE
-YWIN_IMAGE
-ERRAWIN_IMAGE
-ERRBWIN_IMAGE
-ERRTHETAWIN_IMAGE
-FLUX_AUTO
-FLUXERR_AUTO
-FLAGS
-FLAGS_WEIGHT
-IMAFLAGS_ISO
-FLUX_RADIUS
-ELONGATION
-SPREAD_MODEL
-SPREADERR_MODEL</code></pre>
-
-<p>Запускается это всё предельно скучно: <code>sex image.fits -c default.sex</code>. На выходе получаете <code>sources.cat</code>, который уже готов к отправке в SCAMP.</p>
-
-<h2 id="install">3. Установка из исходников</h2>
-
-<p>Пакетные менеджеры — это, конечно, удобно, но там версии иногда отстают на годы. Если хочется свежак — придётся собирать. Ниже — по-человечески, для трёх систем.</p>
-
-<h3>Linux (Debian / Ubuntu)</h3>
-
-<p>Сначала ставим всё, что нужно для сборки. Без этого <code>./configure</code> будет ругаться на отсутствующие библиотеки.</p>
-
-<pre><code>sudo apt update
-sudo apt install build-essential autoconf automake libtool pkg-config \
-                 libcfitsio-dev libfftw3-dev libatlas-base-dev libplplot-dev</code></pre>
-
-<p>Для SCAMP ещё пригодится <code>libcurl4-openssl-dev</code> (он нужен для скачивания справочных каталогов онлайн).</p>
-
-<p>Дальше — клонируем и собираем SExtractor. Версию можно взять из <a href="https://github.com/astromatic/sextractor/releases" target="_blank">релизов на GitHub</a>.</p>
-
-<pre><code>git clone https://github.com/astromatic/sextractor.git
-cd sextractor
-./autogen.sh
-./configure --prefix=/usr/local
-make -j$(nproc)
-sudo make install</code></pre>
-
-<p>Если <code>./autogen.sh</code> вдруг скажет, что чего-то не хватает — перечитайте список пакетов выше, почти наверняка забыли <code>libtool</code> или <code>pkg-config</code>.</p>
-
-<p>Теперь SCAMP. Он живёт в <a href="https://github.com/astromatic/scamp" target="_blank">отдельном репозитории</a>.</p>
-
-<pre><code>git clone https://github.com/astromatic/scamp.git
-cd scamp
-./autogen.sh
-./configure --prefix=/usr/local
-make -j$(nproc)
-sudo make install</code></pre>
-
-<p>Проверяем: <code>sex --version</code> и <code>scamp -v</code> должны что-то внятное ответить.</p>
-
-<div class="note">
-<strong>Маленькая хитрость:</strong> если не хочется засорять систему, добавьте <code>--prefix=$HOME/.local</code> при конфигурации. Тогда <code>sudo</code> не понадобится, а бинарники окажутся в <code>~/.local/bin</code> — главное, чтобы этот путь был в <code>$PATH</code>.
-</div>
-
-<h3>macOS</h3>
-
-<p>На маке проще всего поставить зависимости через Homebrew, а сами программы собрать из исходников. Так вы получите свежие версии и не будете зависеть от того, что там положили мейнтейнеры формулы.</p>
-
-<pre><code>brew install autoconf automake libtool cfitsio fftw openblas plplot</code></pre>
-
-<p>Дальше — стандартная песня autotools, как и на Linux:</p>
-
-<pre><code>git clone https://github.com/astromatic/sextractor.git
-cd sextractor
-./autogen.sh
-./configure --prefix=/usr/local
-make -j$(sysctl -n hw.ncpu)
-sudo make install</code></pre>
-
-<p>И то же самое для SCAMP:</p>
-
-<pre><code>git clone https://github.com/astromatic/scamp.git
-cd scamp
-./autogen.sh
-./configure --prefix=/usr/local
-make -j$(sysctl -n hw.ncpu)
-sudo make install</code></pre>
-
-<div class="warning">
-<strong>Про Apple Silicon:</strong> если вы на M1/M2/M3, Homebrew по умолчанию ставит библиотеки в <code>/opt/homebrew</code>. <code>configure</code> обычно сам это подхватывает, но если начнёт ругаться на <code>cfitsio</code> — добавьте флаги <code>CPPFLAGS="-I/opt/homebrew/include"</code> и <code>LDFLAGS="-L/opt/homebrew/lib"</code> перед вызовом <code>./configure</code>.
-</div>
-
-<h3>Windows</h3>
-
-<p>Тут всё чуть печальнее. Нативно собрать это добро под Windows — та ещё лотерея. Официально разработчики пишут, что код должен компилироваться на любой POSIX-совместимой системе, и в качестве примера приводят Cygwin[reference:0]. На практике проще всего не мучиться, а поставить <strong>WSL</strong> (Windows Subsystem for Linux) и внутри него повторить инструкцию для Ubuntu. Это займёт минут десять, зато потом всё будет работать как часы.</p>
-
-<p>Если WSL по каким-то причинам не вариант — можно попробовать Cygwin, но готовьтесь к приключениям с путями и зависимостями. Инструкция будет ровно та же, что для Linux, только вместо <code>apt</code> — установщик пакетов Cygwin, и <code>./configure</code> может потребовать ручного указания путей к библиотекам.</p>
-
-<pre><code># Внутри WSL (Ubuntu) — всё как на обычном Linux
-sudo apt update
-sudo apt install build-essential autoconf automake libtool pkg-config \
-                 libcfitsio-dev libfftw3-dev libatlas-base-dev libplplot-dev
-
-git clone https://github.com/astromatic/sextractor.git
-cd sextractor && ./autogen.sh && ./configure && make -j$(nproc) && sudo make install
-
-git clone https://github.com/astromatic/scamp.git
-cd scamp && ./autogen.sh && ./configure && make -j$(nproc) && sudo make install</code></pre>
-
-<div class="aside">
-<strong>Честно:</strong> я пробовал собирать SCAMP нативно под Windows через MSYS2 — это возможно, но количество подводных камней на квадратный сантиметр зашкаливает. WSL экономит нервы. Если у вас Windows 10 или 11 — берите WSL, не думайте.
-</div>
-
-<h2 id="scamp-config">4. SCAMP: настройка и запуск</h2>
-
-<p>SCAMP читает каталоги <code>FITS_LDAC</code> от SExtractor версии 2.4.4 и выше. Настройки живут в конфиге, который можно передать флагом <code>-c</code>. Вот довольно типичный набор:</p>
-
-<pre><code>GROUP_RADIUS     1.0
-
-ASTREF_CATALOG   2MASS
-ASTREF_BAND      DEFAULT
-
-MATCH            Y
-PIXSCALE_MAXERR  1.2
-POSANGLE_MAXERR  5.0
-POSITION_MAXERR  1.0
-
-SOLVE_ASTROM     Y
-DISTORT_DEGREES  3
-CENTROID_KEYS    XWIN_IMAGE,YWIN_IMAGE
-CENTROIDERR_KEYS ERRAWIN_IMAGE,ERRBWIN_IMAGE,ERRTHETAWIN_IMAGE
-PHOTFLUX_KEY     FLUX_AUTO
-PHOTFLUXERR_KEY  FLUXERR_AUTO
-
-MERGEDOUTCAT_TYPE  FITS_LDAC
-MERGEDOUTCAT_NAME  scamp_merged.cat</code></pre>
-
-<p>Запуск выглядит так:</p>
-
-<pre><code>scamp sources.cat -c scamp.conf</code></pre>
-
-<p>Если каталогов много, их можно перечислить в файле (по одному на строку) и скормить SCAMP'у через <code>@</code>:</p>
-
-<pre><code>scamp @catalog_list.txt -c scamp.conf</code></pre>
-
-<p>На выходе появится <code>.head</code>-файл (или несколько, если изображений было много) с обновлёнными WCS-ключами. Их можно применить к исходным FITS-файлам через MissFITS или сразу скормить SWarp'у для сложения.</p>
-
-<div class="note">
-<strong>Если SCAMP ругается на справочный каталог:</strong> по умолчанию он лезет в USNO-B1. Если у вас нет интернета или каталог недоступен, укажите локальный файл: <code>ASTREF_CATALOG FILE</code> и <code>ASTREFCAT_NAME /path/to/catalog</code>. Для оффлайновой работы это самый надёжный путь.
-</div>
-
-<h2 id="pipeline">5. Собираем всё вместе</h2>
-
-<p>Минимальный конвейер для одного снимка выглядит до смешного коротко:</p>
-
-<pre><code># 1. Достаём каталог источников
-sex image.fits -c default.sex -CATALOG_NAME image.cat
-
-# 2. Считаем астрометрию
-scamp image.cat -c scamp.conf
-
-# 3. Применяем заголовки (пример с MissFITS)
-missfits image.fits image.head</code></pre>
-
-<p>После этого в заголовке <code>image.fits</code> появятся уточнённые <code>CRVAL1</code>, <code>CRVAL2</code>, <code>CD1_1</code> и остальная WCS-братия. Точность обычно получается на уровне десятых долей пикселя и лучше — для сложения более чем достаточно.</p>
-
-<p>Если что-то пошло не так на этапе SCAMP — первым делом смотрите на <code>FLAGS</code> в каталоге SExtractor. Объекты с подозрительными флагами (слипшиеся, обрезанные краем, с битыми пикселями) лучше отфильтровать ещё до астрометрии, иначе они будут путать сопоставление.</p>
-
-<div class="footnote">
-<p><strong>Ссылки, которые реально пригодились:</strong><br>
-Документация SExtractor: <a href="https://sextractor.readthedocs.io/" target="_blank">sextractor.readthedocs.io</a><br>
-Документация SCAMP: <a href="https://scamp.readthedocs.io/" target="_blank">scamp.readthedocs.io</a><br>
-Исходники SExtractor: <a href="https://github.com/astromatic/sextractor" target="_blank">github.com/astromatic/sextractor</a><br>
-Исходники SCAMP: <a href="https://github.com/astromatic/scamp" target="_blank">github.com/astromatic/scamp</a></p>
-</div>
+  <div id="app"></div>
+
+  <script>
+    // Docsify Configuration (see https://docsify.js.org/#/configuration)
+    window.$docsify = {
+      name: 'Simple Docsify Template',
+
+      // Sidebar Configuration
+      auto2top: true,
+      loadSidebar: true,
+      maxLevel: 0,
+      // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
+      subMaxLevel: 3,
+
+      // Search Plugin Configuration
+      search: {
+        placeholder: 'Type to search',
+        noData: 'No matches found.',
+        // Headline depth, 1 - 6
+        depth: 2,
+      }
+    };
+  </script>
+
+  <!-- Required -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/docsify.min.js"></script>
+
+  <!-- Recommended -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/search.js"></script>
 
 </body>
 </html>
