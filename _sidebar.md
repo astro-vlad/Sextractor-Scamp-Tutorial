@@ -1,0 +1,5 @@
+- [Введение](README)
+- [1. Установка](install)
+- [2. SExtractor](sextractor)
+- [3. SCAMP](scamp)
+- [4. Сборка конвейера](pipeline)
